@@ -48,7 +48,7 @@ def task2_index():
 def task2_upload_img():
     form = UploadImageForm()
     if form.validate_on_submit():
-        image = request.files.get('photo')
+        image = form.photo.data  # request.files.get('photo')
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(image.filename)))
         flash("Photo uploaded", 'success')
     return render_template('task2/upload_img.html', title='task2', form=form)
@@ -65,9 +65,8 @@ users = {'admin': '1111', 'user': '2222'}
 def task3_login():
     form = LoginForm()
     if form.validate_on_submit():
-        name = request.form.get('login')
-        password = request.form.get('password')
-        print(form.login, name, password)
+        name = form.login.data  # request.form.get('login')
+        password = form.password.data  # request.form.get('password')
         if users.get(name) == password:
             return task1_welcome(name)
         else:
@@ -81,7 +80,7 @@ def task3_login():
 def task_4_get_length():
     form = GetLengthForm()
     if form.validate_on_submit():
-        text = request.form.get('text')
+        text = form.text.data  # request.form.get('text')
         return result(str(len(text.split())))
     return render_template('task4/index.html', form=form, title='task4')
 
@@ -102,9 +101,9 @@ operations = {
 def task5_calculate():
     form = CalculateForm()
     if form.validate_on_submit():
-        x = int(request.form.get('x'))
-        y = int(request.form.get('y'))
-        operator = request.form.get('operator')
+        x = form.x.data  # int(request.form.get('x'))
+        y = form.y.data  # int(request.form.get('y'))
+        operator = form.operator.data  # request.form.get('operator')
         return result(str(operations[operator](x, y)))
     return render_template('task5/index.html', form=form, title='task5')
 
@@ -116,8 +115,8 @@ def task5_calculate():
 def task6_check_age():
     form = CheckAgeForm()
     if form.validate_on_submit():
-        name = request.form.get('name')
-        age = int(request.form.get('age'))
+        name = form.name.data  # request.form.get('name')
+        age = form.age.data  # int(request.form.get('age'))
         if age < 18:
             return result(message=f"{name}, Вам еще рано посещать такие сайты")
         return task1_welcome(name)
@@ -131,7 +130,7 @@ def task6_check_age():
 def task7_check_age():
     form = PowNumberForm()
     if form.validate_on_submit():
-        number = int(request.form.get('number'))
+        number = form.number.data  # int(request.form.get('number'))
         return result(f"{number} - pow(number) = {number ** 2}")
     return render_template('task7/index.html', form=form, title='task7')
 
@@ -143,7 +142,7 @@ def task7_check_age():
 def task8_check_age():
     form = NameForm()
     if form.validate_on_submit():
-        name = request.form.get('name')
+        name = form.name.data  # request.form.get('name')
         flash(f"Привет, {name}!", "success")
         return task1_welcome(name)
     return render_template('task8/index.html', form=form, title='task8')
@@ -170,8 +169,8 @@ def login_required(f):
 def task9_login():
     form = LoginWithEmailForm()
     if form.validate_on_submit():
-        name = request.form.get('name')
-        email = request.form.get('email')
+        name = form.name.data  # request.form.get('name')
+        email = form.email.data  # request.form.get('email')
         response = make_response(redirect(url_for('task9_welcome')))
         response.set_cookie('name', name)
         response.set_cookie('email', email)
