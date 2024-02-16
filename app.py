@@ -36,6 +36,8 @@ def task1_welcome(name='John'):
     return render_template('task1/welcome.html', title='task1', name=name)
 
 
+# Создать страницу, на которой будет изображение и ссылкана другую страницу,
+# на которой будет отображаться форма для загрузки изображений.
 @app.route('/task2/')
 @app.route('/task2/index')
 def task2_index():
